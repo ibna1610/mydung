@@ -42,6 +42,155 @@
         display: block;
     }
 
+    /* ─── PHOTO CARDS ─────────────────────────────────────────────────────── */
+    #photo-layer {
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 10;
+        overflow: hidden;
+    }
+
+    .photo-card {
+        position: absolute;
+        pointer-events: none;
+        animation: none;
+        will-change: transform, opacity;
+    }
+
+    .photo-card .frame {
+        position: relative;
+        border-radius: 18px;
+        padding: 10px 10px 36px 10px;
+        box-shadow:
+            0 0 0 2px rgba(255,255,255,0.15),
+            0 8px 32px rgba(0,0,0,0.5),
+            0 0 20px rgba(255,180,210,0.3);
+        background: white;
+        transform: rotate(var(--rot));
+        transition: box-shadow 0.3s;
+    }
+
+    /* 8 loại khung khác nhau, mỗi ảnh random 1 loại */
+    .photo-card.frame-1 .frame {
+        background: linear-gradient(135deg, #fff0f5, #ffe4ef);
+        border: 3px solid #ffb6d9;
+        box-shadow: 0 0 0 6px rgba(255,182,217,0.25), 0 10px 30px rgba(255,100,160,0.3);
+    }
+    .photo-card.frame-2 .frame {
+        background: linear-gradient(135deg, #fffbf0, #fff3dc);
+        border: 3px solid #ffd700;
+        box-shadow: 0 0 0 6px rgba(255,215,0,0.2), 0 10px 30px rgba(200,150,0,0.3);
+    }
+    .photo-card.frame-3 .frame {
+        background: linear-gradient(135deg, #f0fff8, #e0fff0);
+        border: 3px solid #7fffd4;
+        box-shadow: 0 0 0 6px rgba(127,255,212,0.2), 0 10px 30px rgba(0,180,120,0.2);
+    }
+    .photo-card.frame-4 .frame {
+        background: linear-gradient(135deg, #f5f0ff, #ede0ff);
+        border: 3px solid #da8fff;
+        box-shadow: 0 0 0 6px rgba(218,143,255,0.2), 0 10px 30px rgba(150,50,255,0.25);
+    }
+    .photo-card.frame-5 .frame {
+        background: linear-gradient(135deg, #fff5f0, #ffe8e0);
+        border: 3px solid #ff9f7f;
+        box-shadow: 0 0 0 6px rgba(255,159,127,0.2), 0 10px 30px rgba(255,100,50,0.25);
+    }
+    .photo-card.frame-6 .frame {
+        background: linear-gradient(135deg, #f0f8ff, #e0f0ff);
+        border: 3px solid #87ceeb;
+        box-shadow: 0 0 0 6px rgba(135,206,235,0.25), 0 10px 30px rgba(30,144,255,0.2);
+    }
+    .photo-card.frame-7 .frame {
+        /* Khung hoa đào — dùng outline kép */
+        background: #fff;
+        border: 4px double #ff69b4;
+        box-shadow: 0 0 0 3px #ffe4f0, 0 0 0 6px #ffb6d9, 0 10px 30px rgba(255,105,180,0.35);
+    }
+    .photo-card.frame-8 .frame {
+        /* Khung vàng kim */
+        background: linear-gradient(135deg, #fffff0, #fffde0);
+        border: 3px solid transparent;
+        background-clip: padding-box;
+        box-shadow:
+            0 0 0 3px #ffd700,
+            0 0 0 6px #fff9c4,
+            0 0 0 9px rgba(255,215,0,0.3),
+            0 12px 36px rgba(180,130,0,0.4);
+    }
+
+    .photo-card img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 10px;
+    }
+
+    /* Trang trí góc khung */
+    .photo-card .frame::before,
+    .photo-card .frame::after {
+        content: var(--deco);
+        position: absolute;
+        font-size: 18px;
+        line-height: 1;
+    }
+    .photo-card .frame::before { top: 4px; left: 8px; }
+    .photo-card .frame::after  { top: 4px; right: 8px; }
+
+    /* Caption phía dưới */
+    .photo-card .caption {
+        position: absolute;
+        bottom: 6px;
+        left: 0; right: 0;
+        text-align: center;
+        font-family: 'Dancing Script', cursive;
+        font-size: 13px;
+        color: #ff4fa3;
+        text-shadow: 0 0 8px rgba(255,100,180,0.6);
+        pointer-events: none;
+    }
+
+    /* Sparkle góc dưới phải */
+    .photo-card .sparkle {
+        position: absolute;
+        bottom: -6px; right: -6px;
+        font-size: 22px;
+        filter: drop-shadow(0 0 6px rgba(255,220,0,0.8));
+        animation: spin 4s linear infinite;
+    }
+
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+    }
+
+    /* Hiệu ứng rơi từ trên xuống */
+    @keyframes fall {
+        0%   { transform: translateY(-120%) rotate(var(--rot)) scale(0.7); opacity: 0; }
+        8%   { opacity: 1; transform: translateY(-5%) rotate(var(--rot)) scale(1); }
+        88%  { opacity: 1; transform: translateY(calc(100vh + 10%)) rotate(calc(var(--rot) + 8deg)) scale(0.95); }
+        100% { opacity: 0; transform: translateY(calc(100vh + 15%)) rotate(calc(var(--rot) + 10deg)) scale(0.9); }
+    }
+
+    /* Hiệu ứng popup tại chỗ rồi biến mất */
+    @keyframes popup {
+        0%   { transform: scale(0) rotate(var(--rot)); opacity: 0; }
+        12%  { transform: scale(1.08) rotate(var(--rot)); opacity: 1; }
+        20%  { transform: scale(1) rotate(var(--rot)); opacity: 1; }
+        75%  { transform: scale(1) rotate(var(--rot)); opacity: 1; }
+        100% { transform: scale(0.5) rotate(var(--rot)); opacity: 0; }
+    }
+
+    /* Hiệu ứng bay lên */
+    @keyframes floatUp {
+        0%   { transform: translateY(110vh) rotate(var(--rot)) scale(0.8); opacity: 0; }
+        10%  { opacity: 1; transform: translateY(60vh) rotate(var(--rot)) scale(1); }
+        90%  { opacity: 1; transform: translateY(-20%) rotate(calc(var(--rot) - 5deg)) scale(0.95); }
+        100% { opacity: 0; transform: translateY(-25%) rotate(calc(var(--rot) - 6deg)) scale(0.9); }
+    }
+
     #hint {
         position: fixed;
         bottom: 20px;
@@ -63,7 +212,164 @@
 </style>
 
 <body>
+    <div id="photo-layer"></div>
     <div id="hint">🖱️ Kéo để xoay • Scroll để zoom • 📱 Chạm & kéo trên mobile</div>
+
+    <!-- ─── PHOTO CARD SYSTEM ──────────────────────────────────────────────── -->
+    <script>
+    (() => {
+        // ── Danh sách ảnh — đặt file vào thư mục photos/ với đúng tên này
+        const PHOTOS = [
+            { src: "photos/photo1.jpg",  caption: "Mỹ Dung ❤️",             w: 240, h: 200 }, // ngang - cô gái đứng nhìn biển
+            { src: "photos/photo2.jpg",  caption: "Xinh quá bé ơi 🌸",       w: 200, h: 280 }, // dọc  - uống nước bên biển
+            { src: "photos/photo3.jpg",  caption: "Nhớ em lắm 💕",           w: 200, h: 280 }, // dọc  - ngồi nhìn xuống
+            { src: "photos/photo4.jpg",  caption: "Trung thu của anh 🌕",    w: 240, h: 200 }, // ngang - hoàng hôn trên tàu
+            { src: "photos/photo5.jpg",  caption: "Đẹp như trăng 🌙",        w: 200, h: 280 }, // dọc  - chắp tay
+            { src: "photos/photo6.jpg",  caption: "Bé yêu dễ thương 🥰",     w: 190, h: 290 }, // dọc  - selfie áo thỏ
+            { src: "photos/photo7.jpg",  caption: "Yêu em nhiều lắm 💗",     w: 200, h: 280 }, // dọc  - áo yếm đen
+            { src: "photos/photo8.jpg",  caption: "Ánh mắt em ✨",           w: 200, h: 280 }, // dọc  - selfie gương
+            { src: "photos/photo9.jpg",  caption: "Mơ màng quá 💖",          w: 240, h: 200 }, // ngang - nằm đọc sách
+            { src: "photos/photo10.jpg", caption: "Nụ cười thiên thần 😊",   w: 240, h: 200 }, // ngang - đọc sách quay đầu
+            { src: "photos/photo11.jpg", caption: "Mỹ Dung của anh 💞",      w: 200, h: 280 }, // dọc  - cầm sách nhìn nghiêng
+        ];
+
+        // 8 kiểu khung, decoration emoji, sparkle emoji
+        const FRAMES = [
+            { cls: "frame-1", deco: '"🌸"', sparkle: "✨" },
+            { cls: "frame-2", deco: '"⭐"', sparkle: "🌟" },
+            { cls: "frame-3", deco: '"🌿"', sparkle: "💚" },
+            { cls: "frame-4", deco: '"💜"', sparkle: "✨" },
+            { cls: "frame-5", deco: '"🌺"', sparkle: "🧡" },
+            { cls: "frame-6", deco: '"💙"', sparkle: "❄️" },
+            { cls: "frame-7", deco: '"🌸"', sparkle: "💕" },
+            { cls: "frame-8", deco: '"👑"', sparkle: "🌟" },
+        ];
+
+        const EFFECTS = ["fall", "popup", "floatUp"];
+        const MAX_VISIBLE = 4;       // tối đa 4 ảnh cùng lúc
+        const MIN_INTERVAL = 2800;   // ms giữa 2 lần spawn
+        const MAX_INTERVAL = 5000;
+
+        const layer = document.getElementById("photo-layer");
+
+        // Queue shuffle — không trùng cho đến khi dùng hết tất cả
+        let queue = [];
+        function refillQueue() {
+            queue = [...Array(PHOTOS.length).keys()];
+            // Fisher-Yates shuffle
+            for (let i = queue.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [queue[i], queue[j]] = [queue[j], queue[i]];
+            }
+        }
+        refillQueue();
+
+        // Track ảnh đang hiển thị để không trùng
+        const activeIndices = new Set();
+
+        function getNextIndex() {
+            // Lấy từ queue, bỏ qua nếu đang hiển thị
+            while (queue.length > 0) {
+                const idx = queue.shift();
+                if (!activeIndices.has(idx)) return idx;
+            }
+            // Queue hết → refill
+            refillQueue();
+            for (const idx of queue) {
+                if (!activeIndices.has(idx)) {
+                    queue = queue.filter(i => i !== idx);
+                    return idx;
+                }
+            }
+            return null;
+        }
+
+        function spawnCard() {
+            if (activeIndices.size >= MAX_VISIBLE) return;
+
+            const idx = getNextIndex();
+            if (idx === null) return;
+
+            const photo  = PHOTOS[idx];
+            const frame  = FRAMES[Math.floor(Math.random() * FRAMES.length)];
+            const effect = EFFECTS[Math.floor(Math.random() * EFFECTS.length)];
+
+            // Scale responsive
+            const scale  = Math.min(window.innerWidth, window.innerHeight) < 600 ? 0.72 : 1;
+            const W = Math.round(photo.w * scale);
+            const H = Math.round(photo.h * scale);
+
+            // Vị trí random trên màn hình (tránh sát mép)
+            const margin = 20;
+            const maxX   = window.innerWidth  - W - margin;
+            const maxY   = window.innerHeight - H - margin;
+            const left   = margin + Math.random() * Math.max(maxX - margin, 0);
+            const top    = margin + Math.random() * Math.max(maxY - margin, 0);
+
+            // Độ nghiêng ngẫu nhiên nhẹ
+            const rot = (Math.random() - 0.5) * 14;
+
+            // Duration theo effect
+            const duration = effect === "popup" ? 5000 + Math.random() * 3000
+                           : effect === "fall"  ? 7000 + Math.random() * 4000
+                           :                      8000 + Math.random() * 4000;
+
+            // Tạo DOM
+            const card = document.createElement("div");
+            card.className = `photo-card ${frame.cls}`;
+            card.style.cssText = `
+                left: ${left}px;
+                top: ${effect === "fall" ? "-30px" : effect === "floatUp" ? "auto" : `${top}px`};
+                bottom: ${effect === "floatUp" ? "-30px" : "auto"};
+                width: ${W}px;
+                --rot: ${rot}deg;
+            `;
+
+            card.innerHTML = `
+                <div class="frame" style="--deco:${frame.deco}">
+                    <img src="${photo.src}" width="${W - 20}" height="${H - 46}"
+                         alt="${photo.caption}" loading="lazy"
+                         onerror="this.style.background='linear-gradient(135deg,#ffb6d9,#ff69b4)';this.removeAttribute('src')">
+                    <div class="caption">${photo.caption}</div>
+                    <div class="sparkle">${frame.sparkle}</div>
+                </div>
+            `;
+
+            layer.appendChild(card);
+            activeIndices.add(idx);
+
+            // Kích hoạt animation sau 1 frame
+            requestAnimationFrame(() => {
+                card.style.animation = `${effect} ${duration}ms ease-in-out forwards`;
+            });
+
+            // Dọn dẹp sau khi animation xong
+            setTimeout(() => {
+                card.remove();
+                activeIndices.delete(idx);
+            }, duration + 200);
+        }
+
+        // Spawn ảnh đầu tiên sớm
+        setTimeout(spawnCard, 800);
+
+        // Spawn liên tục
+        function scheduleNext() {
+            const delay = MIN_INTERVAL + Math.random() * (MAX_INTERVAL - MIN_INTERVAL);
+            setTimeout(() => {
+                spawnCard();
+                scheduleNext();
+            }, delay);
+        }
+        scheduleNext();
+
+        // Resize: cập nhật lại vị trí không bị lệch
+        window.addEventListener("resize", () => {
+            document.querySelectorAll(".photo-card").forEach(c => c.remove());
+            activeIndices.clear();
+        });
+    })();
+    </script>
 
     <script type="module">
         import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
@@ -106,7 +412,7 @@
             "Chúc em Trung thu vui vẻ và hạnh phúc 🌕💕",
             "Trung thu an lành, yêu em thật nhiều ❤️",
             "Chúc bé yêu luôn xinh đẹp và vui vẻ 🌸",
-            "Chúc em đêm trăng thật nhiều niềm vui �",
+            "Chúc em đêm trăng thật nhiều niềm vui",
             "Chúc em luôn bình an và hạnh phúc ✨",
             "Mong em nhận thật nhiều yêu thương hôm nay 💗",
             "Chúc bé yêu một Trung thu thật đáng nhớ 🎑",
@@ -115,15 +421,15 @@
             "Mong em luôn được yêu thương và che chở 💝",
             "Trung thu này, thương em nhiều hơn nhé 💕",
             "Chúc em luôn ngọt ngào như bánh Trung thu 🍰",
-            "Mong chúng mình mãi bên nhau dưới trăng �",
+            "Mong chúng mình mãi bên nhau dưới trăng",
             "Trung thu ấm áp, trái tim luôn yêu em 💗",
             "Mong nụ cười em luôn rạng rỡ 😊",
             "Chúc em một đêm Trung thu thật lung linh ✨",
             "Yêu em nhiều hơn mỗi mùa Trung thu 💕",
-            "Chúc bé yêu luôn vui vẻ và đáng yêu �",
+            "Chúc bé yêu luôn vui vẻ và đáng yêu",
             "Mong ánh trăng mang bình an đến em 🌙",
             "Trung thu này, nhớ em nhiều lắm ❤️",
-            "Chúc em đón Trung thu thật nhiều niềm vui �",
+            "Chúc em đón Trung thu thật nhiều niềm vui",
             "Mong em luôn tỏa sáng như ánh trăng 🌟",
             "Chúc em hạnh phúc trọn vẹn đêm Trung thu 💝",
             "Trung thu tròn đầy, tình mình cũng vậy 🌕💕",
@@ -132,8 +438,8 @@
             "Chúc em luôn xinh đẹp 💗",
             "Mong mọi điều tốt đẹp đến với em 🌸",
             "Trung thu này, gửi em ngàn yêu thương 💞",
-            "Chúc em luôn bình an và nở nụ cười �",
-            "Mong trái tim em luôn đầy yêu thương �💖",
+            "Chúc em luôn bình an và nở nụ cười ",
+            "Mong trái tim em luôn đầy yêu thương 💖",
             "Chúc em một mùa Trung thu thật hạnh phúc 🌕",
             "Trung thu có trăng, anh có em là đủ ❤️",
             "Chúc em luôn ngọt ngào và đáng yêu 🌸",
@@ -164,7 +470,7 @@
             "Chúc bé yêu đêm nay thật nhiều niềm vui 🥰",
             "Trung thu vui nhé, thương em nhất đời ❤️",
             "Trung thu này, chúc em thật nhiều yêu thương 🌸",
-            "Chúc em luôn khỏe mạnh và bình an �",
+            "Chúc em luôn khỏe mạnh và bình an",
             "Mong em mãi là ánh sáng ✨",
             "Chúc em một đời luôn ngập tràn yêu thương ❤️",
             "Trung thu này, mong em luôn vui vẻ 😊",
