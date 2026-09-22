@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#0d0010">
+    <meta property="og:title" content="Chúc Mừng Trung Thu 🌕">
+    <meta property="og:description" content="Gửi em ngàn yêu thương nhân dịp Trung Thu 💕">
+    <meta property="og:type" content="website">
+    <title>🌕 Bánh trung thu của Mỹ Dung ❤️</title>
+</head>
+<style>
+    @import "https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap";
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        overflow: hidden;
+        background: #0d0010;
+        /* Tắt touch callout và text select trên iOS */
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        /* Ngăn overscroll bounce trên iOS */
+        overscroll-behavior: none;
+        /* Đảm bảo full height kể cả khi có notch */
+        height: 100dvh;
+        width: 100dvw;
+        touch-action: none;
+    }
+
+    canvas {
+        display: block;
+    }
+
+    #hint {
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        color: rgba(255, 182, 193, 0.5);
+        font-family: 'Dancing Script', cursive;
+        font-size: 14px;
+        pointer-events: none;
+        text-align: center;
+        letter-spacing: 1px;
+        animation: fadeHint 4s ease-in-out infinite;
+    }
+
+    @keyframes fadeHint {
+        0%, 100% { opacity: 0.3; }
+        50%       { opacity: 0.8; }
+    }
+</style>
+
+<body>
+    <div id="hint">🖱️ Kéo để xoay • Scroll để zoom • 📱 Chạm & kéo trên mobile</div>
+
+    <script type="module">
+        import * as THREE from "https://cdn.skypack.dev/three@0.136.0";
+        import { OrbitControls } from "https://cdn.skypack.dev/three@0.136.0/examples/jsm/controls/OrbitControls";
+
+        // ─── SCENE SETUP ───────────────────────────────────────────────────────
+        // Detect mobile để giảm tải
+        const isMobile = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)
+                      || window.innerWidth < 768;
+
+        const scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x0d0010);
+        scene.fog = new THREE.FogExp2(0x0d0010, 0.018);
+
+        const camera = new THREE.PerspectiveCamera(60, innerWidth / innerHeight, 0.1, 500);
+        camera.position.set(0, 0, 55);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: !isMobile });
+        renderer.setSize(innerWidth, innerHeight);
+        // Mobile dùng pixelRatio thấp hơn để tiết kiệm GPU
+        renderer.setPixelRatio(isMobile ? Math.min(devicePixelRatio, 1.5) : Math.min(devicePixelRatio, 2));
+        document.body.appendChild(renderer.domElement);
+
+        window.addEventListener("resize", () => {
+            camera.aspect = innerWidth / innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(innerWidth, innerHeight);
+        });
+
+        // ─── ORBIT CONTROLS ────────────────────────────────────────────────────
+        const controls = new OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.enablePan = false;
+        controls.minDistance = 15;
+        controls.maxDistance = 120;
+
+        // ─── LỜI CHÚC ──────────────────────────────────────────────────────────
+        const wishes = [
+            "Chúc em Trung thu vui vẻ và hạnh phúc 🌕💕",
+            "Trung thu an lành, yêu em thật nhiều ❤️",
+            "Chúc bé yêu luôn xinh đẹp và vui vẻ 🌸",
+            "Chúc em đêm trăng thật nhiều niềm vui �",
+            "Chúc em luôn bình an và hạnh phúc ✨",
+            "Mong em nhận thật nhiều yêu thương hôm nay 💗",
+            "Chúc bé yêu một Trung thu thật đáng nhớ 🎑",
+            "Ánh trăng đẹp, nhưng em còn đẹp hơn 🌕💕",
+            "Chúc em mọi ước mơ đều thành hiện thực 🦋",
+            "Mong em luôn được yêu thương và che chở 💝",
+            "Trung thu này, thương em nhiều hơn nhé 💕",
+            "Chúc em luôn ngọt ngào như bánh Trung thu 🍰",
+            "Mong chúng mình mãi bên nhau dưới trăng �",
+            "Trung thu ấm áp, trái tim luôn yêu em 💗",
+            "Mong nụ cười em luôn rạng rỡ 😊",
+            "Chúc em một đêm Trung thu thật lung linh ✨",
+            "Yêu em nhiều hơn mỗi mùa Trung thu 💕",
+            "Chúc bé yêu luôn vui vẻ và đáng yêu �",
+            "Mong ánh trăng mang bình an đến em 🌙",
+            "Trung thu này, nhớ em nhiều lắm ❤️",
+            "Chúc em đón Trung thu thật nhiều niềm vui �",
+            "Mong em luôn tỏa sáng như ánh trăng 🌟",
+            "Chúc em hạnh phúc trọn vẹn đêm Trung thu 💝",
+            "Trung thu tròn đầy, tình mình cũng vậy 🌕💕",
+            "Mong em luôn được cuộc đời dịu dàng 🌷",
+            "Trung thu vui vẻ, bé yêu 🥰",
+            "Chúc em luôn xinh đẹp 💗",
+            "Mong mọi điều tốt đẹp đến với em 🌸",
+            "Trung thu này, gửi em ngàn yêu thương 💞",
+            "Chúc em luôn bình an và nở nụ cười �",
+            "Mong trái tim em luôn đầy yêu thương �💖",
+            "Chúc em một mùa Trung thu thật hạnh phúc 🌕",
+            "Trung thu có trăng, anh có em là đủ ❤️",
+            "Chúc em luôn ngọt ngào và đáng yêu 🌸",
+            "Mong em luôn gặp những điều tốt đẹp ✨",
+            "Chúc em đêm nay ngủ thật ngon nhé 🌙",
+            "Mong em luôn là cô gái hạnh phúc 💗",
+            "Chúc em có một đêm trăng thật đẹp 🌕",
+            "Mong chúng mình cùng nhau đón nhiều Trung thu 💞",
+            "Chúc em mãi giữ nụ cười xinh ấy 😊",
+            "Trung thu an vui, tình yêu đong đầy 💝",
+            "Chúc em luôn được yêu thương thật nhiều 💕",
+            "Trung thu này, chúc em thật nhiều may mắn 🍀",
+            "Mong em luôn vui như ánh trăng rằm 🌕",
+            "Chúc tình yêu của anh mãi bình yên 💗",
+            "Trung thu trọn vẹn, yêu thương trọn đời 💞",
+            "Chúc em luôn rạng rỡ như sao trời ✨",
+            "Trung thu này, gửi em nụ hôn 💋❤️",
+            "Chúc em mọi ngày đều ngập tràn hạnh phúc 🌸",
+            "Chúc em một mùa trăng thật ấm áp 🌙",
+            "Mong em luôn có những ngày thật đẹp 🌷",
+            "Trung thu này, ... muốn ôm em thật lâu 🤗",
+            "Trung thu có bánh, có trăng, có tình yêu 💕",
+            "Chúc em luôn hạnh phúc dưới ánh trăng 🌕",
+            "Trung thu này, yêu em thật nhiều nhé ❤️",
+            "Mong em luôn xinh đẹp và hạnh phúc 🌸",
+            "Chúc tình yêu mình mãi ngọt ngào như mật 🍯",
+            "Mong em luôn được những điều tử tế ✨",
+            "Chúc bé yêu đêm nay thật nhiều niềm vui 🥰",
+            "Trung thu vui nhé, thương em nhất đời ❤️",
+            "Trung thu này, chúc em thật nhiều yêu thương 🌸",
+            "Chúc em luôn khỏe mạnh và bình an �",
+            "Mong em mãi là ánh sáng ✨",
+            "Chúc em một đời luôn ngập tràn yêu thương ❤️",
+            "Trung thu này, mong em luôn vui vẻ 😊",
+            "Mong chúng mình mãi cùng nhau ngắm trăng 🌙",
+            "Trung thu ngọt ngào, tình yêu càng ngọt hơn 💗",
+            "Mong em luôn giữ trái tim thật ấm áp 🌸",
+            "Chúc em mãi hạnh phúc trong tình yêu 💖",
+            "Mong tình yêu chúng mình mãi đẹp như trăng 🌕",
+            "Chúc em Trung thu hạnh phúc, yêu em mãi ❤️",
+        ];
+
+        // "Mỹ Dung ❤️" xuất hiện ~1 trong 4 lần (xác suất 25%)
+        // bằng cách thêm vào pool riêng có trọng số cao
+        const MY_DUNG = "Mỹ Dung ❤️";
+        const MY_DUNG_WEIGHT = 0.25; // 25% xác suất mỗi lần spawn
+
+        function pickWish() {
+            if (Math.random() < MY_DUNG_WEIGHT) return MY_DUNG;
+            return wishes[Math.floor(Math.random() * wishes.length)];
+        }
+
+        // ─── TEXT → TEXTURE → SPRITE ─────────────────────────────────────────
+        function makeWishTexture(text) {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+
+            const isSpecial = (text === MY_DUNG);
+            const fontSize  = isSpecial ? 42 : 28;
+            ctx.font = `bold ${fontSize}px 'Dancing Script', cursive`;
+            const textWidth = ctx.measureText(text).width;
+
+            canvas.width  = Math.ceil(textWidth) + 24;
+            canvas.height = fontSize + 20;
+
+            // Re-apply font after resize
+            ctx.font = `bold ${fontSize}px 'Dancing Script', cursive`;
+            ctx.textBaseline = "middle";
+
+            // Glow mạnh hơn cho "Mỹ Dung ❤️"
+            ctx.shadowColor = isSpecial ? "rgba(255, 50, 120, 1)" : "rgba(255, 100, 180, 0.9)";
+            ctx.shadowBlur  = isSpecial ? 20 : 10;
+
+            // Gradient màu: trắng-hồng nóng cho special, hồng thường cho còn lại
+            const grad = ctx.createLinearGradient(0, 0, canvas.width, 0);
+            if (isSpecial) {
+                grad.addColorStop(0,   "#ffffff");
+                grad.addColorStop(0.3, "#ff6eb4");
+                grad.addColorStop(0.7, "#ff1a7a");
+                grad.addColorStop(1,   "#ffffff");
+            } else {
+                grad.addColorStop(0,   "#ff9ec4");
+                grad.addColorStop(0.5, "#ff4fa3");
+                grad.addColorStop(1,   "#ffb6e1");
+            }
+            ctx.fillStyle = grad;
+
+            ctx.fillText(text, 12, canvas.height / 2);
+
+            const tex = new THREE.CanvasTexture(canvas);
+            return { tex, aspect: canvas.width / canvas.height, isSpecial };
+        }
+
+        // ─── PARTICLES (background sparkles) ──────────────────────────────────
+        function buildSparkles() {
+            const count = isMobile ? 2500 : 6000;
+            const positions = new Float32Array(count * 3);
+            const colors    = new Float32Array(count * 3);
+            const sizesArr  = new Float32Array(count);
+
+            const pinkPalette = [
+                new THREE.Color(0xff9ec4),
+                new THREE.Color(0xff4fa3),
+                new THREE.Color(0xffb6e1),
+                new THREE.Color(0xffc8dd),
+                new THREE.Color(0xff85c1),
+            ];
+
+            for (let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                positions[i3]     = (Math.random() - 0.5) * 160;
+                positions[i3 + 1] = (Math.random() - 0.5) * 200;
+                positions[i3 + 2] = (Math.random() - 0.5) * 100;
+
+                const c = pinkPalette[Math.floor(Math.random() * pinkPalette.length)];
+                colors[i3]     = c.r;
+                colors[i3 + 1] = c.g;
+                colors[i3 + 2] = c.b;
+
+                sizesArr[i] = Math.random() * 2.5 + 0.5;
+            }
+
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+            geo.setAttribute("color",    new THREE.BufferAttribute(colors, 3));
+            geo.setAttribute("size",     new THREE.BufferAttribute(sizesArr, 1));
+
+            const mat = new THREE.ShaderMaterial({
+                uniforms: { time: { value: 0 } },
+                vertexShader: `
+                    attribute float size;
+                    varying vec3 vColor;
+                    uniform float time;
+                    void main() {
+                        vColor = color;
+                        vec3 pos = position;
+                        // gentle twinkle drift
+                        pos.y += sin(time * 0.4 + position.x * 0.5) * 0.3;
+                        vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+                        gl_PointSize = size * (250.0 / -mvPos.z);
+                        gl_Position  = projectionMatrix * mvPos;
+                    }
+                `,
+                fragmentShader: `
+                    varying vec3 vColor;
+                    void main() {
+                        float d = length(gl_PointCoord - vec2(0.5));
+                        if (d > 0.5) discard;
+                        float alpha = smoothstep(0.5, 0.1, d);
+                        gl_FragColor = vec4(vColor, alpha);
+                    }
+                `,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                vertexColors: true,
+            });
+
+            return new THREE.Points(geo, mat);
+        }
+
+        const sparkles = buildSparkles();
+        scene.add(sparkles);
+
+        // ─── STAR FIELD (nhiều ngôi sao lấp lánh, z thấp → ở sau chữ) ─────────
+        function buildStarField() {
+            const count = isMobile ? 500 : 1200;
+            const positions = new Float32Array(count * 3);
+            const sizesArr  = new Float32Array(count);
+            const phases    = new Float32Array(count); // twinkle phase
+
+            for (let i = 0; i < count; i++) {
+                const i3 = i * 3;
+                positions[i3]     = (Math.random() - 0.5) * 130;
+                positions[i3 + 1] = (Math.random() - 0.5) * 180;
+                positions[i3 + 2] = -30 - Math.random() * 40; // ĐẶT SAU chữ (z âm)
+                sizesArr[i]  = Math.random() * 3 + 1.5;
+                phases[i]    = Math.random() * Math.PI * 2;
+            }
+
+            const geo = new THREE.BufferGeometry();
+            geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+            geo.setAttribute("aSize",    new THREE.BufferAttribute(sizesArr, 1));
+            geo.setAttribute("aPhase",   new THREE.BufferAttribute(phases, 1));
+
+            const mat = new THREE.ShaderMaterial({
+                uniforms: { time: { value: 0 } },
+                vertexShader: `
+                    attribute float aSize;
+                    attribute float aPhase;
+                    varying float vAlpha;
+                    uniform float time;
+                    void main() {
+                        // twinkle: alpha nhấp nháy theo sin
+                        vAlpha = 0.4 + 0.6 * abs(sin(time * 1.2 + aPhase));
+                        vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+                        gl_PointSize = aSize * (300.0 / -mvPos.z);
+                        gl_Position  = projectionMatrix * mvPos;
+                    }
+                `,
+                fragmentShader: `
+                    varying float vAlpha;
+                    void main() {
+                        vec2 uv = gl_PointCoord - vec2(0.5);
+                        float d = length(uv);
+                        if (d > 0.5) discard;
+                        // hình ngôi sao 4 cánh
+                        float star = min(abs(uv.x), abs(uv.y));
+                        float core = smoothstep(0.5, 0.0, d);
+                        float cross4 = smoothstep(0.12, 0.0, star) * smoothstep(0.5, 0.1, d);
+                        float shape = clamp(core + cross4 * 1.5, 0.0, 1.0);
+                        // màu vàng nhạt pha trắng
+                        vec3 col = mix(vec3(1.0, 0.95, 0.7), vec3(1.0, 1.0, 1.0), core);
+                        gl_FragColor = vec4(col, shape * vAlpha);
+                    }
+                `,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+            });
+
+            const pts = new THREE.Points(geo, mat);
+            pts.renderOrder = 0; // vẽ trước chữ
+            return pts;
+        }
+
+        const starField = buildStarField();
+        scene.add(starField);
+
+        // ═══════════════════════════════════════════════════════════════════════
+        // ─── ICON 3D CANVAS PAINTERS ──────────────────────────────────────────
+        // Mỗi hàm vẽ 1 icon lên canvas 256×256, trả về THREE.CanvasTexture
+        // ═══════════════════════════════════════════════════════════════════════
+
+        function makeCanvas(s = 256) {
+            const cv = document.createElement("canvas");
+            cv.width = cv.height = s;
+            const ctx = cv.getContext("2d");
+            // Nền trong suốt hoàn toàn — KHÔNG vẽ nền đen
+            // để NormalBlending hiện đúng trên nền tối
+            return { cv, ctx };
+        }
+
+        // ── 1. TRĂNG TRÒN (full moon) ─────────────────────────────────────────
+        function drawFullMoon() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128, cy = 128, r = 108;
+            // outer glow
+            const glow = ctx.createRadialGradient(cx, cy, r * 0.6, cx, cy, r * 1.4);
+            glow.addColorStop(0, "rgba(255,230,100,0.35)");
+            glow.addColorStop(1, "rgba(255,230,100,0)");
+            ctx.fillStyle = glow; ctx.beginPath();
+            ctx.arc(cx, cy, r * 1.4, 0, Math.PI * 2); ctx.fill();
+            // moon body gradient
+            const mg = ctx.createRadialGradient(cx - 20, cy - 25, 10, cx, cy, r);
+            mg.addColorStop(0, "#fffde0");
+            mg.addColorStop(0.45, "#ffe97a");
+            mg.addColorStop(1, "#e8a800");
+            ctx.fillStyle = mg; ctx.beginPath();
+            ctx.arc(cx, cy, r, 0, Math.PI * 2); ctx.fill();
+            // craters
+            [[80, 90, 12], [145, 75, 8], [165, 145, 10], [95, 160, 7], [130, 120, 5]].forEach(([x, y, cr]) => {
+                const cg = ctx.createRadialGradient(x - 2, y - 2, 1, x, y, cr);
+                cg.addColorStop(0, "rgba(200,160,0,0.4)");
+                cg.addColorStop(1, "rgba(200,140,0,0.1)");
+                ctx.fillStyle = cg; ctx.beginPath();
+                ctx.arc(x, y, cr, 0, Math.PI * 2); ctx.fill();
+            });
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 2. TRĂNG KHUYẾT (crescent moon) ──────────────────────────────────
+        function drawCrescent() {
+            const { cv, ctx } = makeCanvas(256);
+            ctx.save();
+            // glow
+            const glow = ctx.createRadialGradient(110, 128, 40, 110, 128, 130);
+            glow.addColorStop(0, "rgba(255,220,80,0.3)");
+            glow.addColorStop(1, "rgba(255,220,80,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(110, 128, 130, 0, Math.PI * 2); ctx.fill();
+            // crescent: full circle minus offset circle
+            ctx.globalCompositeOperation = "source-over";
+            const mg = ctx.createRadialGradient(95, 110, 5, 110, 128, 100);
+            mg.addColorStop(0, "#fff8c0");
+            mg.addColorStop(0.5, "#ffd84f");
+            mg.addColorStop(1, "#e8a500");
+            ctx.fillStyle = mg;
+            ctx.beginPath(); ctx.arc(110, 128, 100, 0, Math.PI * 2); ctx.fill();
+            ctx.globalCompositeOperation = "destination-out";
+            ctx.beginPath(); ctx.arc(155, 108, 82, 0, Math.PI * 2); ctx.fill();
+            ctx.restore();
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 3. NGÔI SAO VÀNG ──────────────────────────────────────────────────
+        function drawStar() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128, cy = 128;
+            // glow
+            const glow = ctx.createRadialGradient(cx, cy, 20, cx, cy, 120);
+            glow.addColorStop(0, "rgba(255,240,80,0.6)");
+            glow.addColorStop(1, "rgba(255,200,0,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.fill();
+            // 5-pointed star
+            function star5(x, y, r1, r2, pts) {
+                ctx.beginPath();
+                for (let i = 0; i < pts * 2; i++) {
+                    const angle = (i * Math.PI) / pts - Math.PI / 2;
+                    const r = i % 2 === 0 ? r1 : r2;
+                    i === 0 ? ctx.moveTo(x + r * Math.cos(angle), y + r * Math.sin(angle))
+                            : ctx.lineTo(x + r * Math.cos(angle), y + r * Math.sin(angle));
+                }
+                ctx.closePath();
+            }
+            star5(cx, cy, 100, 42, 5);
+            const sg = ctx.createRadialGradient(cx - 15, cy - 20, 5, cx, cy, 100);
+            sg.addColorStop(0, "#fffce0");
+            sg.addColorStop(0.4, "#ffe54f");
+            sg.addColorStop(1, "#e8a000");
+            ctx.fillStyle = sg; ctx.fill();
+            // shine lines
+            ctx.strokeStyle = "rgba(255,255,200,0.5)";
+            ctx.lineWidth = 2;
+            [[-1, -1], [1, -1], [0, 1], [-1.2, 0.4], [1.2, 0.4]].forEach(([dx, dy]) => {
+                ctx.beginPath();
+                ctx.moveTo(cx, cy);
+                ctx.lineTo(cx + dx * 115, cy + dy * 115);
+                ctx.stroke();
+            });
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 4. ĐÈN LỒNG ──────────────────────────────────────────────────────
+        function drawLantern() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128;
+            // glow halo
+            const glow = ctx.createRadialGradient(cx, 145, 20, cx, 145, 110);
+            glow.addColorStop(0, "rgba(255,100,20,0.45)");
+            glow.addColorStop(1, "rgba(255,80,0,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(cx, 145, 110, 0, Math.PI * 2); ctx.fill();
+            // string top
+            ctx.strokeStyle = "#c8a020"; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.moveTo(cx, 18); ctx.lineTo(cx, 48); ctx.stroke();
+            // top cap
+            ctx.fillStyle = "#c8200a";
+            ctx.beginPath(); ctx.ellipse(cx, 52, 32, 10, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#e83010";
+            ctx.fillRect(cx - 28, 48, 56, 10);
+            // body gradient
+            const bg = ctx.createRadialGradient(cx - 15, 120, 10, cx, 140, 75);
+            bg.addColorStop(0, "#ff7030");
+            bg.addColorStop(0.4, "#e82010");
+            bg.addColorStop(1, "#8b0000");
+            ctx.fillStyle = bg;
+            ctx.beginPath();
+            ctx.ellipse(cx, 80, 62, 20, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath();
+            ctx.moveTo(cx - 62, 80); ctx.quadraticCurveTo(cx - 78, 140, cx - 62, 200);
+            ctx.lineTo(cx + 62, 200); ctx.quadraticCurveTo(cx + 78, 140, cx + 62, 80);
+            ctx.closePath(); ctx.fill();
+            ctx.beginPath();
+            ctx.ellipse(cx, 200, 62, 20, 0, 0, Math.PI * 2); ctx.fill();
+            // inner light
+            const ig = ctx.createRadialGradient(cx, 140, 5, cx, 140, 55);
+            ig.addColorStop(0, "rgba(255,200,60,0.6)");
+            ig.addColorStop(1, "rgba(255,100,0,0)");
+            ctx.fillStyle = ig;
+            ctx.beginPath();
+            ctx.ellipse(cx, 140, 50, 60, 0, 0, Math.PI * 2); ctx.fill();
+            // heart
+            ctx.fillStyle = "rgba(255,240,100,0.9)";
+            ctx.font = "28px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            ctx.fillText("♥", cx, 140);
+            // ribs
+            ctx.strokeStyle = "rgba(180,0,0,0.4)"; ctx.lineWidth = 1.5;
+            [100, 120, 140, 160, 180].forEach(y => {
+                const w = 55 - Math.abs(y - 140) * 0.25;
+                ctx.beginPath(); ctx.ellipse(cx, y, w, 5, 0, 0, Math.PI * 2); ctx.stroke();
+            });
+            // bottom cap
+            ctx.fillStyle = "#c8200a";
+            ctx.fillRect(cx - 28, 196, 56, 10);
+            ctx.beginPath(); ctx.ellipse(cx, 206, 32, 10, 0, 0, Math.PI * 2); ctx.fill();
+            // tassel
+            ctx.strokeStyle = "#e8c010"; ctx.lineWidth = 2;
+            [-8, 0, 8].forEach(dx => {
+                ctx.beginPath(); ctx.moveTo(cx + dx, 216);
+                ctx.lineTo(cx + dx + (Math.random() - 0.5) * 8, 248); ctx.stroke();
+            });
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 5. BÁNH TRUNG THU ─────────────────────────────────────────────────
+        function drawMooncake() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128, cy = 148;
+            // shadow
+            const sh = ctx.createRadialGradient(cx, cy + 40, 5, cx, cy + 40, 70);
+            sh.addColorStop(0, "rgba(0,0,0,0.4)"); sh.addColorStop(1, "rgba(0,0,0,0)");
+            ctx.fillStyle = sh;
+            ctx.beginPath(); ctx.ellipse(cx, cy + 38, 68, 16, 0, 0, Math.PI * 2); ctx.fill();
+            // plate
+            const pg = ctx.createRadialGradient(cx, cy + 35, 5, cx, cy + 35, 75);
+            pg.addColorStop(0, "#7a4010"); pg.addColorStop(1, "#3a1800");
+            ctx.fillStyle = pg;
+            ctx.beginPath(); ctx.ellipse(cx, cy + 35, 72, 15, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#8b5010";
+            ctx.beginPath(); ctx.ellipse(cx, cy + 28, 72, 15, 0, 0, Math.PI * 2); ctx.fill();
+            // cake body
+            const cg = ctx.createLinearGradient(cx - 65, cy - 45, cx + 65, cy + 35);
+            cg.addColorStop(0, "#f0b030"); cg.addColorStop(0.4, "#e8920a");
+            cg.addColorStop(0.8, "#c86808"); cg.addColorStop(1, "#a04800");
+            ctx.fillStyle = cg;
+            ctx.beginPath();
+            ctx.roundRect(cx - 65, cy - 48, 130, 80, 18);
+            ctx.fill();
+            // top highlight
+            const tg = ctx.createLinearGradient(cx - 50, cy - 48, cx - 50, cy - 20);
+            tg.addColorStop(0, "rgba(255,220,120,0.55)");
+            tg.addColorStop(1, "rgba(255,180,60,0)");
+            ctx.fillStyle = tg;
+            ctx.beginPath(); ctx.roundRect(cx - 55, cy - 48, 110, 28, [14, 14, 0, 0]); ctx.fill();
+            // pattern grid lines
+            ctx.strokeStyle = "rgba(160,70,0,0.5)"; ctx.lineWidth = 1.5;
+            [-22, 0, 22].forEach(dx => {
+                ctx.beginPath(); ctx.moveTo(cx + dx, cy - 48); ctx.lineTo(cx + dx, cy + 32); ctx.stroke();
+            });
+            [-15, 10].forEach(dy => {
+                ctx.beginPath(); ctx.moveTo(cx - 65, cy + dy); ctx.lineTo(cx + 65, cy + dy); ctx.stroke();
+            });
+            // center emblem: moon
+            ctx.fillStyle = "rgba(255,200,50,0.9)";
+            ctx.beginPath(); ctx.arc(cx, cy - 8, 22, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "#c86808";
+            ctx.font = "bold 18px serif"; ctx.textAlign = "center"; ctx.textBaseline = "middle";
+            ctx.fillText("月", cx, cy - 8);
+            // edge shading
+            ctx.strokeStyle = "rgba(120,50,0,0.6)"; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.roundRect(cx - 65, cy - 48, 130, 80, 18); ctx.stroke();
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 6. THỎ NGỌC ──────────────────────────────────────────────────────
+        function drawRabbit() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128, cy = 145;
+            // aura
+            const aura = ctx.createRadialGradient(cx, cy, 20, cx, cy, 120);
+            aura.addColorStop(0, "rgba(220,180,255,0.3)");
+            aura.addColorStop(1, "rgba(180,120,255,0)");
+            ctx.fillStyle = aura;
+            ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.fill();
+
+            function rabbitFill(r = 0) {
+                const g = ctx.createRadialGradient(cx - 8, cy - 15, 5, cx, cy, 90);
+                g.addColorStop(0, `rgba(255,252,255,${0.98 - r * 0.1})`);
+                g.addColorStop(0.6, `rgba(240,230,255,${0.95 - r * 0.1})`);
+                g.addColorStop(1, `rgba(200,180,240,${0.9 - r * 0.1})`);
+                return g;
+            }
+            // left ear
+            ctx.fillStyle = rabbitFill();
+            ctx.beginPath(); ctx.ellipse(cx - 28, cy - 78, 15, 42, -0.25, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "rgba(255,160,180,0.7)";
+            ctx.beginPath(); ctx.ellipse(cx - 28, cy - 78, 8, 30, -0.25, 0, Math.PI * 2); ctx.fill();
+            // right ear
+            ctx.fillStyle = rabbitFill();
+            ctx.beginPath(); ctx.ellipse(cx + 28, cy - 78, 15, 42, 0.25, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "rgba(255,160,180,0.7)";
+            ctx.beginPath(); ctx.ellipse(cx + 28, cy - 78, 8, 30, 0.25, 0, Math.PI * 2); ctx.fill();
+            // body
+            ctx.fillStyle = rabbitFill();
+            ctx.beginPath(); ctx.ellipse(cx, cy + 15, 48, 52, 0, 0, Math.PI * 2); ctx.fill();
+            // head
+            ctx.beginPath(); ctx.ellipse(cx, cy - 30, 42, 40, 0, 0, Math.PI * 2); ctx.fill();
+            // eyes
+            ctx.fillStyle = "#ff3060";
+            ctx.beginPath(); ctx.arc(cx - 13, cy - 34, 5.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(cx + 13, cy - 34, 5.5, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = "rgba(255,255,255,0.8)";
+            ctx.beginPath(); ctx.arc(cx - 11, cy - 36, 2, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.arc(cx + 15, cy - 36, 2, 0, Math.PI * 2); ctx.fill();
+            // nose
+            ctx.fillStyle = "#ff8090";
+            ctx.beginPath(); ctx.ellipse(cx, cy - 20, 4, 3, 0, 0, Math.PI * 2); ctx.fill();
+            // whiskers
+            ctx.strokeStyle = "rgba(180,160,200,0.7)"; ctx.lineWidth = 1.2;
+            [[-1, -1], [-1, 0], [-1, 1], [1, -1], [1, 0], [1, 1]].forEach(([sx, sy]) => {
+                ctx.beginPath();
+                ctx.moveTo(cx + sx * 6, cy - 19);
+                ctx.lineTo(cx + sx * 30, cy - 19 + sy * 5);
+                ctx.stroke();
+            });
+            // mouth smile
+            ctx.strokeStyle = "rgba(180,120,150,0.8)"; ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.moveTo(cx - 7, cy - 14); ctx.quadraticCurveTo(cx, cy - 8, cx + 7, cy - 14);
+            ctx.stroke();
+            // paws
+            ctx.fillStyle = rabbitFill(1);
+            ctx.beginPath(); ctx.ellipse(cx - 38, cy + 40, 18, 12, -0.5, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(cx + 38, cy + 40, 18, 12, 0.5, 0, Math.PI * 2); ctx.fill();
+            // tail
+            ctx.fillStyle = "rgba(255,250,255,0.9)";
+            ctx.beginPath(); ctx.arc(cx + 50, cy + 10, 12, 0, Math.PI * 2); ctx.fill();
+            // blush
+            ctx.fillStyle = "rgba(255,140,160,0.3)";
+            ctx.beginPath(); ctx.ellipse(cx - 24, cy - 22, 12, 7, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.beginPath(); ctx.ellipse(cx + 24, cy - 22, 12, 7, 0, 0, Math.PI * 2); ctx.fill();
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 7. MÂY ────────────────────────────────────────────────────────────
+        function drawCloud() {
+            const { cv, ctx } = makeCanvas(256);
+            // soft glow
+            const glow = ctx.createRadialGradient(128, 148, 10, 128, 148, 110);
+            glow.addColorStop(0, "rgba(180,160,255,0.3)");
+            glow.addColorStop(1, "rgba(140,100,220,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(128, 148, 110, 0, Math.PI * 2); ctx.fill();
+            // cloud shape
+            const cg = ctx.createLinearGradient(40, 90, 220, 195);
+            cg.addColorStop(0, "rgba(230,220,255,0.95)");
+            cg.addColorStop(0.5, "rgba(200,185,245,0.9)");
+            cg.addColorStop(1, "rgba(160,140,220,0.85)");
+            ctx.fillStyle = cg;
+            [[128, 148, 55], [80, 160, 38], [170, 158, 42], [105, 130, 32], [155, 125, 28]].forEach(([x, y, r]) => {
+                ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill();
+            });
+            // highlight
+            ctx.fillStyle = "rgba(255,255,255,0.4)";
+            ctx.beginPath(); ctx.ellipse(115, 118, 28, 14, -0.3, 0, Math.PI * 2); ctx.fill();
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── 8. HOA ANH ĐÀO ────────────────────────────────────────────────────
+        function drawFlower() {
+            const { cv, ctx } = makeCanvas(256);
+            const cx = 128, cy = 128;
+            // glow
+            const glow = ctx.createRadialGradient(cx, cy, 10, cx, cy, 100);
+            glow.addColorStop(0, "rgba(255,180,200,0.5)");
+            glow.addColorStop(1, "rgba(255,100,150,0)");
+            ctx.fillStyle = glow;
+            ctx.beginPath(); ctx.arc(cx, cy, 100, 0, Math.PI * 2); ctx.fill();
+            // 5 petals
+            for (let i = 0; i < 5; i++) {
+                ctx.save();
+                ctx.translate(cx, cy);
+                ctx.rotate((i * Math.PI * 2) / 5);
+                const pg = ctx.createRadialGradient(0, -38, 2, 0, -45, 30);
+                pg.addColorStop(0, "#ffe0ec");
+                pg.addColorStop(0.5, "#ffb6cf");
+                pg.addColorStop(1, "#ff80aa");
+                ctx.fillStyle = pg;
+                ctx.beginPath();
+                ctx.ellipse(0, -42, 22, 30, 0, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            }
+            // center
+            const yg = ctx.createRadialGradient(cx, cy, 2, cx, cy, 18);
+            yg.addColorStop(0, "#fff5a0");
+            yg.addColorStop(0.6, "#ffd700");
+            yg.addColorStop(1, "#e8a000");
+            ctx.fillStyle = yg;
+            ctx.beginPath(); ctx.arc(cx, cy, 18, 0, Math.PI * 2); ctx.fill();
+            // stamens
+            ctx.fillStyle = "#ff6090";
+            for (let i = 0; i < 8; i++) {
+                const a = (i * Math.PI * 2) / 8;
+                ctx.beginPath(); ctx.arc(cx + Math.cos(a) * 13, cy + Math.sin(a) * 13, 2.5, 0, Math.PI * 2); ctx.fill();
+            }
+            return new THREE.CanvasTexture(cv);
+        }
+
+        // ── Build cache ────────────────────────────────────────────────────────
+        const ICON_DRAWERS = [
+            { draw: drawFullMoon,  weight: 3, scale: [8, 8] },
+            { draw: drawCrescent,  weight: 2, scale: [7, 7] },
+            { draw: drawStar,      weight: 4, scale: [5.5, 5.5] },
+            { draw: drawLantern,   weight: 3, scale: [5.5, 6.5] },
+            { draw: drawMooncake,  weight: 2, scale: [7, 6] },
+            { draw: drawRabbit,    weight: 3, scale: [6.5, 6.5] },
+            { draw: drawCloud,     weight: 2, scale: [8.5, 5.5] },
+            { draw: drawFlower,    weight: 4, scale: [4.5, 4.5] },
+        ];
+
+        // Weighted pool
+        const ICON_POOL = [];
+        ICON_DRAWERS.forEach((d, idx) => {
+            for (let w = 0; w < d.weight; w++) ICON_POOL.push(idx);
+        });
+
+        // Pre-bake textures
+        const iconTextures = ICON_DRAWERS.map(d => d.draw());
+
+        // ─── ICON OBJECTS ──────────────────────────────────────────────────────
+        const ICON_COUNT  = isMobile ? 35 : 70;   // mobile giảm xuống 35
+        const iconObjects = [];
+
+        function spawnIcon(scatter = false) {
+            const idx    = ICON_POOL[Math.floor(Math.random() * ICON_POOL.length)];
+            const def    = ICON_DRAWERS[idx];
+            const tex    = iconTextures[idx];
+
+            const mat = new THREE.SpriteMaterial({
+                map: tex,
+                transparent: true,
+                depthTest: false,
+                depthWrite: false,
+                blending: THREE.NormalBlending,
+                opacity: 0,
+            });
+            const sprite = new THREE.Sprite(mat);
+
+            // Scale lớn hơn rõ hơn
+            const [sw, sh] = def.scale;
+            const scaleVar = 1.0 + Math.random() * 0.8;
+            sprite.scale.set(sw * scaleVar, sh * scaleVar, 1);
+
+            // z gần hơn: -2 đến -18 thay vì -8 đến -36
+            sprite.position.x = (Math.random() - 0.5) * 110;
+            sprite.position.y = scatter
+                ? (Math.random() - 0.5) * 170
+                : 95 + Math.random() * 25;
+            sprite.position.z = -2 - Math.random() * 16;
+
+            sprite.renderOrder = 1;
+
+            // Loại "popup" (xuất hiện → lơ lửng → biến mất) không rơi
+            const isFloat = Math.random() < 0.35;
+
+            sprite.userData = {
+                speed:     isFloat ? 0 : 0.025 + Math.random() * 0.04,
+                isFloat,
+                floatLife: isFloat ? 300 + Math.random() * 200 : 0,  // frames — lâu hơn
+                floatAge:  0,
+                bobAmp:    0.015 + Math.random() * 0.02,
+                bobFreq:   0.5 + Math.random() * 0.8,
+                bobPhase:  Math.random() * Math.PI * 2,
+                sway:      Math.random() * Math.PI * 2,
+                swayAmp:   0.004 + Math.random() * 0.008,
+                swayFreq:  0.25 + Math.random() * 0.35,
+                rotZ:      (Math.random() - 0.5) * 0.01,
+                alpha:     0,
+                fadeIn:    true,
+                fadeOut:   false,
+                maxAlpha:  1.0,   // hiện rõ 100%
+            };
+
+            scene.add(sprite);
+            iconObjects.push(sprite);
+        }
+
+        for (let i = 0; i < ICON_COUNT; i++) spawnIcon(true);
+
+        // ─── WISH SPRITES ──────────────────────────────────────────────────────
+        const WISH_COUNT  = isMobile ? 30 : 60;   // mobile giảm xuống 30
+        const SPREAD_X    = 50;   // khoảng cách ngang
+        const SPAWN_Y     = 80;   // vị trí sinh ra (trên cao)
+        const RESET_Y     = -80;  // vị trí reset (dưới thấp)
+        const DEPTH_RANGE = 40;   // độ sâu Z
+
+        const wishObjects = [];
+
+        // Pre-load font trước khi tạo texture
+        const fontFace = new FontFace("Dancing Script", "url(https://fonts.gstatic.com/s/dancingscript/v25/If2cXTr6YS-zF4S-kcSWSVi_sxjsohD9F50Ruu7BMSo3ROp8ltA.woff2)");
+        fontFace.load().then(font => {
+            document.fonts.add(font);
+            initWishes();
+        }).catch(() => {
+            // Fallback nếu font chưa load kịp
+            initWishes();
+        });
+
+        function initWishes() {
+            for (let i = 0; i < WISH_COUNT; i++) {
+                spawnWish(i, true);
+            }
+        }
+
+        function spawnWish(index, scatter = false) {
+            const text = (index < wishes.length && scatter) ? wishes[index] : pickWish();
+            const { tex, aspect, isSpecial } = makeWishTexture(text);
+
+            const height = isSpecial ? 5 + Math.random() * 1.5 : 3 + Math.random() * 2;
+            const width  = height * aspect;
+
+            const geo = new THREE.PlaneGeometry(width, height);
+            const mat = new THREE.MeshBasicMaterial({
+                map: tex,
+                transparent: true,
+                depthWrite: false,
+                blending: THREE.AdditiveBlending,
+                side: THREE.DoubleSide,
+            });
+
+            const mesh = new THREE.Mesh(geo, mat);
+
+            // Vị trí ban đầu
+            mesh.position.x = (Math.random() - 0.5) * SPREAD_X;
+            mesh.position.y = scatter
+                ? (Math.random() - 0.5) * (SPAWN_Y - RESET_Y)   // rải đều lúc init
+                : SPAWN_Y + Math.random() * 20;
+            mesh.position.z = (Math.random() - 0.5) * DEPTH_RANGE;
+
+            // Nghiêng nhẹ
+            mesh.rotation.z = (Math.random() - 0.5) * 0.3;
+            mesh.renderOrder = 2; // luôn vẽ TRÊN icon và sparkle
+
+            // Metadata
+            mesh.userData = {
+                speed:    isSpecial ? 0.025 + Math.random() * 0.03 : 0.04 + Math.random() * 0.08,
+                drift:    (Math.random() - 0.5) * 0.01,
+                sway:     Math.random() * Math.PI * 2,
+                swayAmp:  0.008 + Math.random() * 0.012,
+                swayFreq: 0.4  + Math.random() * 0.6,
+                rotSpeed: (Math.random() - 0.5) * 0.002,
+                alpha:    0,
+                fadeIn:   true,
+                fadeOut:  false,
+                wishIndex: index,
+            };
+
+            scene.add(mesh);
+            wishObjects.push(mesh);
+        }
+
+        // ─── ANIMATION LOOP ────────────────────────────────────────────────────
+        const clock = new THREE.Clock();
+
+        renderer.setAnimationLoop(() => {
+            const t = clock.getElapsedTime();
+
+            controls.update();
+
+            // Update sparkles
+            sparkles.material.uniforms.time.value = t;
+
+            // Update star field twinkle
+            starField.material.uniforms.time.value = t;
+
+            // Update icon sprites
+            for (let i = 0; i < iconObjects.length; i++) {
+                const obj = iconObjects[i];
+                const ud  = obj.userData;
+
+                // Bob up-down (tất cả icon đều lơ lửng nhẹ)
+                obj.position.y += Math.sin(t * ud.bobFreq + ud.bobPhase) * ud.bobAmp;
+
+                if (!ud.isFloat) {
+                    // Mode rơi
+                    obj.position.y -= ud.speed;
+                    obj.position.x += Math.sin(t * ud.swayFreq + ud.sway) * ud.swayAmp;
+                } else {
+                    // Mode lơ lửng: đếm frame rồi fade out
+                    ud.floatAge++;
+                    if (ud.floatAge > ud.floatLife * 0.75) ud.fadeOut = true;
+                }
+
+                // Xoay nhẹ Z
+                obj.material.rotation = (obj.material.rotation || 0) + ud.rotZ;
+
+                // Fade in — nhanh hơn để icon xuất hiện rõ ngay
+                if (ud.fadeIn) {
+                    ud.alpha = Math.min(ud.alpha + 0.035, ud.maxAlpha);
+                    obj.material.opacity = ud.alpha;
+                    if (ud.alpha >= ud.maxAlpha) ud.fadeIn = false;
+                }
+
+                // Fade out trigger khi gần đáy (rơi) hoặc hết tuổi (float)
+                if (!ud.isFloat && obj.position.y < -80 + 22) ud.fadeOut = true;
+                if (ud.fadeOut) {
+                    ud.alpha = Math.max(ud.alpha - 0.014, 0);
+                    obj.material.opacity = ud.alpha;
+                }
+
+                // Destroy & respawn
+                const expired = (!ud.isFloat && obj.position.y < -80)
+                             || (ud.isFloat  && ud.alpha <= 0 && ud.fadeOut);
+                if (expired) {
+                    scene.remove(obj);
+                    obj.material.dispose();
+                    iconObjects.splice(i, 1);
+                    i--;
+                    spawnIcon(false);
+                }
+            }
+
+            // Update wish sprites
+            for (let i = 0; i < wishObjects.length; i++) {
+                const obj = wishObjects[i];
+                const ud  = obj.userData;
+
+                // Rơi xuống
+                obj.position.y -= ud.speed;
+
+                // Lắc lư nhẹ theo chiều ngang
+                obj.position.x += Math.sin(t * ud.swayFreq + ud.sway) * ud.swayAmp;
+
+                // Drift ngang chậm
+                obj.position.x += ud.drift;
+
+                // Xoay nhẹ
+                obj.rotation.z += ud.rotSpeed;
+
+                // Fade in
+                if (ud.fadeIn) {
+                    ud.alpha = Math.min(ud.alpha + 0.01, 1);
+                    obj.material.opacity = ud.alpha;
+                    if (ud.alpha >= 1) ud.fadeIn = false;
+                }
+
+                // Fade out khi gần đáy
+                if (obj.position.y < RESET_Y + 20) {
+                    ud.fadeOut = true;
+                }
+                if (ud.fadeOut) {
+                    ud.alpha = Math.max(ud.alpha - 0.015, 0);
+                    obj.material.opacity = ud.alpha;
+                }
+
+                // Reset lên trên khi ra khỏi màn hình
+                if (obj.position.y < RESET_Y) {
+                    scene.remove(obj);
+                    obj.geometry.dispose();
+                    obj.material.map.dispose();
+                    obj.material.dispose();
+                    wishObjects.splice(i, 1);
+                    i--;
+
+                    // Spawn lời chúc mới (weighted random, ưu tiên "Mỹ Dung ❤️")
+                    const text = pickWish();
+                    const { tex, aspect, isSpecial } = makeWishTexture(text);
+
+                    const height = isSpecial ? 5 + Math.random() * 1.5 : 3 + Math.random() * 2;
+                    const width  = height * aspect;
+
+                    const geo  = new THREE.PlaneGeometry(width, height);
+                    const mat  = new THREE.MeshBasicMaterial({
+                        map: tex,
+                        transparent: true,
+                        depthWrite: false,
+                        blending: THREE.AdditiveBlending,
+                        side: THREE.DoubleSide,
+                        opacity: 0,
+                    });
+
+                    const mesh = new THREE.Mesh(geo, mat);
+                    mesh.position.x = (Math.random() - 0.5) * SPREAD_X;
+                    mesh.position.y = SPAWN_Y + Math.random() * 15;
+                    mesh.position.z = (Math.random() - 0.5) * DEPTH_RANGE;
+                    mesh.rotation.z = (Math.random() - 0.5) * 0.3;
+                    mesh.renderOrder = 2;
+
+                    mesh.userData = {
+                        speed:    isSpecial ? 0.025 + Math.random() * 0.03 : 0.04 + Math.random() * 0.08,
+                        drift:    (Math.random() - 0.5) * 0.01,
+                        sway:     Math.random() * Math.PI * 2,
+                        swayAmp:  0.008 + Math.random() * 0.012,
+                        swayFreq: 0.4  + Math.random() * 0.6,
+                        rotSpeed: (Math.random() - 0.5) * 0.002,
+                        alpha:    0,
+                        fadeIn:   true,
+                        fadeOut:  false,
+                    };
+
+                    scene.add(mesh);
+                    wishObjects.push(mesh);
+                }
+            }
+
+            renderer.render(scene, camera);
+        });
+    </script>
+</body>
+
+</html>
